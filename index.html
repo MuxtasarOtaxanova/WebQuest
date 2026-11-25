@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Our Changing Planet – WebQuest</title>
 <style>
-:root{--bg:#f3faf6;--card:#fff;--ink:#12302a;--mut:#4d6b63;--ac:#0e9470;--ac2:#ff8a3d;--line:#d5e8df;--bad:#d64545;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1f1b;--card:#15302a;--ink:#e6f5ef;--mut:#9cc0b4;--line:#244840;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0d1f1b;--card:#15302a;--ink:#e6f5ef;--mut:#9cc0b4;--line:#244840;color-scheme:dark}
+:root{--bg:#050b1a;--card:rgba(14,30,60,.62);--ink:#e8f6ff;--mut:#8fb2cc;--ac:#00e5ff;--ac2:#b86bff;--line:rgba(0,229,255,.28);--bad:#ff4d6d;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme='light']{--bg:#eaf4ff;--card:rgba(255,255,255,.8);--ink:#0b1f3a;--mut:#47627e;--ac:#0077b6;--ac2:#7b2ff7;--line:rgba(0,119,182,.3);color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
 header{position:relative;background:linear-gradient(135deg,#0b6e57,#12a37f 55%,#ff8a3d);color:#fff;padding:40px 20px 32px;text-align:center}
@@ -77,14 +76,46 @@ input[type=range]{width:100%;accent-color:var(--ac2)}
 .big{font-size:20px;font-weight:700}
 footer{text-align:center;color:var(--mut);padding:20px;font-size:14px}
 @media print{header,nav,.np,footer{display:none!important}section{display:none!important}#conclusion{display:block!important}}
+#sky{position:fixed;inset:0;z-index:-1;width:100%;height:100%}
+body{font-family:'Segoe UI',system-ui,sans-serif}
+header{background:linear-gradient(135deg,rgba(0,229,255,.12),rgba(184,107,255,.18));border-bottom:1px solid var(--line);color:var(--ink);backdrop-filter:blur(8px);padding:30px 20px 20px}
+header h1{letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,#00e5ff,#b86bff,#ff8a3d);-webkit-background-clip:text;background-clip:text;color:transparent}
+.globe{display:block;width:92px;height:92px;border-radius:50%;margin:0 auto 10px;font-size:0;position:relative;overflow:hidden;animation:none;background:radial-gradient(circle at 30% 30%,#7be0ff,#1565c0 45%,#0a2a5e 75%);box-shadow:0 0 40px #00e5ff88,inset -14px -10px 24px #000a}
+.globe::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 30px 18px at 35% 40%,#3ddc84 60%,#0000 62%),radial-gradient(ellipse 22px 30px at 68% 62%,#3ddc84 60%,#0000 62%);animation:drift 8s linear infinite alternate}
+@keyframes drift{from{transform:translateX(-24px)}to{transform:translateX(24px)}}
+nav{background:var(--card);backdrop-filter:blur(12px)}
+nav button.on{color:#001018;box-shadow:0 0 14px var(--ac)}
+.card,.tile,.chip{backdrop-filter:blur(10px)}
+.card{box-shadow:0 0 28px rgba(0,229,255,.07)}
+.stat{background:linear-gradient(135deg,rgba(0,229,255,.2),rgba(184,107,255,.28));border:1px solid var(--line);color:var(--ink)}
+.stat b{color:var(--ac);text-shadow:0 0 16px var(--ac)}
+.btn{background:linear-gradient(90deg,var(--ac2),#ff4fd8);box-shadow:0 0 16px rgba(184,107,255,.5)}
+.btn.alt{background:linear-gradient(90deg,#00b8d4,var(--ac));color:#001018;box-shadow:0 0 16px rgba(0,229,255,.45)}
+th{color:#001018}
+.tile:hover{box-shadow:0 0 18px var(--ac)}
+h2{letter-spacing:.03em;color:var(--ac)}
+.flip .a{background:linear-gradient(135deg,#00b8d4,#7b2ff7)}
+.cert{border-color:var(--ac)}
+#hud{max-width:420px;margin:14px auto 0;font-size:14px}
+#hud .bar{height:10px;margin:4px 0}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:linear-gradient(90deg,var(--ac),var(--ac2));color:#001018;font-weight:700;padding:10px 18px;border-radius:999px;opacity:0;transition:.4s;z-index:20;pointer-events:none}
+#toast.show{opacity:1}
+.city{width:100%;height:auto;border-radius:14px;border:1px solid var(--line);display:block}
+.city g,#smog{transition:opacity .6s}
+.turb{transform-origin:0 0;animation:spin 3s linear infinite}
+.vid{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,rgba(184,107,255,.25),rgba(0,229,255,.12));border-radius:14px;padding:14px;margin:8px 0;border:1px solid var(--line)}
+.vid .pl{flex:none;width:92px;height:56px;border-radius:10px;background:#000a;display:flex;align-items:center;justify-content:center;font-size:26px;color:#fff;box-shadow:0 0 14px var(--ac2)}
+.sw{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
 </style>
 </head>
 <body>
+<canvas id='sky'></canvas>
 <header>
   <button id="theme" aria-label="Switch theme">🌓</button>
-  <div class="globe">🌍</div>
+  <div class='globe'></div>
   <h1>Our Changing Planet</h1>
   <p>An interactive WebQuest for grades 8–9: find out why Earth is changing and what you can do about it.</p>
+  <div id='hud'><span id='lv'></span><div class='bar'><i id='xb'></i></div></div><div id='toast'></div>
 </header>
 <nav id="nav"></nav>
 <main>
@@ -141,6 +172,10 @@ footer{text-align:center;color:var(--mut);padding:20px;font-size:14px}
   <div class="card" id="steps"></div>
   <h3>🧮 Step 3 tool: your Eco-score</h3>
   <div class="card" id="eco"></div>
+  <h3>🏙️ Step 4 tool: build the city of 2050</h3>
+  <div class='card'><p style='margin-top:0'>Switch on solutions and watch the future city change.</p>
+  <svg class='city' viewBox='0 0 600 220' aria-label='City of 2050'><defs><linearGradient id='sk' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='#1b0f3a'/><stop offset='1' stop-color='#ff8a3d'/></linearGradient></defs><rect width='600' height='220' fill='url(#sk)'/><circle cx='500' cy='50' r='22' fill='#fff6b0' opacity='.9'/><g fill='#0a1226' stroke='#00e5ff' stroke-width='1'><rect x='40' y='90' width='60' height='110'/><rect x='110' y='60' width='50' height='140'/><rect x='170' y='100' width='70' height='100'/><rect x='250' y='40' width='55' height='160'/><rect x='315' y='85' width='65' height='115'/><rect x='390' y='70' width='50' height='130'/></g><rect y='200' width='600' height='20' fill='#06101f'/><g id='a_solar' opacity='0' fill='#2fa8ff'><rect x='44' y='84' width='52' height='6'/><rect x='114' y='54' width='42' height='6'/><rect x='254' y='34' width='47' height='6'/><rect x='394' y='64' width='42' height='6'/></g><g id='a_trees' opacity='0' fill='#3ddc84'><circle cx='20' cy='190' r='14'/><circle cx='245' cy='192' r='12'/><circle cx='385' cy='192' r='12'/><circle cx='455' cy='190' r='14'/><circle cx='560' cy='188' r='16'/></g><g id='a_ev' opacity='0' fill='#00e5ff'><rect x='120' y='204' width='46' height='10' rx='4'/><rect x='300' y='204' width='46' height='10' rx='4'/></g><g id='a_rec' opacity='0' fill='#b86bff'><rect x='480' y='176' width='14' height='22'/><rect x='498' y='176' width='14' height='22'/></g><g id='a_wind' opacity='0' stroke='#fff' stroke-width='3'><line x1='540' y1='200' x2='540' y2='100'/><g transform='translate(540 100)'><g class='turb'><line x1='0' y1='0' x2='0' y2='-40'/><line x1='0' y1='0' x2='35' y2='20'/><line x1='0' y1='0' x2='-35' y2='20'/></g></g></g><rect id='smog' width='600' height='200' fill='#8a6a3a' opacity='.55'/></svg>
+  <div class='sw' id='sw'></div><p class='big' id='fc'></p></div>
 </section>
 
 <section id="resources">
@@ -180,6 +215,7 @@ footer{text-align:center;color:var(--mut);padding:20px;font-size:14px}
     </ul>
     <p>Think about it: <i>What is one habit you will change this week?</i></p>
   </div>
+  <div class='card np'><h3 style='margin-top:0'>🎯 7-day eco challenge</h3><div id='chal'></div></div>
   <div class="card np"><h3 style="margin-top:0">🌱 Pledge wall</h3>
     <button class="btn" id="pledgeBtn">Give me an idea</button>
     <p id="pledge" style="font-weight:600"></p>
@@ -235,7 +271,7 @@ function go(id){
 window.addEventListener("hashchange",function(){go(location.hash.slice(1))});
 function count(){document.querySelectorAll(".cnt").forEach(function(e){var to=+e.dataset.to,d=+e.dataset.dec||0,t0=null;
   function f(t){if(!t0)t0=t;var p=Math.min((t-t0)/1200,1);e.textContent=(to*p).toFixed(d);if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)})}
-$("theme").onclick=function(){var r=document.documentElement,d=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;r.dataset.theme=d?"light":"dark"};
+$('theme').onclick=function(){var r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light'};
 
 var F=[["🌡️","Rising temperatures","Earth is about 1.1 °C warmer than in the late 1800s, and the last ten years were the warmest on record."],["🧊","Melting ice","Glaciers and polar ice are shrinking, which also reduces fresh water for millions of people."],["🌊","Rising seas","Warm water expands and melting ice adds water, so coastal cities face more floods."],["🌪️","Extreme weather","Heatwaves, floods, droughts and storms are becoming more frequent or stronger."],["🪸","Ocean changes","Oceans absorb heat and CO₂. Warmer, more acidic water harms coral reefs and fish."],["🌳","Forests and wildlife","Fires, drought and lost habitat push many animals and plants toward extinction."]];
 F.forEach(function(f){var t=el("button","tile","<b>"+f[0]+"</b>"+f[1]+"<span>"+f[2]+"</span>");t.onclick=function(){t.classList.toggle("open")};$("facts").appendChild(t)});
@@ -267,7 +303,7 @@ $("eco").appendChild(eb);$("eco").appendChild(eo);
 var RS=[["🌐","web","NASA Climate Kids","Games, videos and simple explanations","https://climatekids.nasa.gov"],["🌐","web","NASA Climate Change","Data, graphs and evidence","https://climate.nasa.gov"],["🌐","web","NOAA Climate.gov","Maps, data stories and teaching tools","https://www.climate.gov"],["🌐","web","United Nations Climate Action","Global goals and facts","https://www.un.org/en/climatechange"],["🌐","web","National Geographic Kids","Nature and environment for young readers","https://kids.nationalgeographic.com"],["🌐","web","BBC Bitesize","School-level science and geography lessons","https://www.bbc.co.uk/bitesize"],["🎬","vid","Climate change explained for kids","Short beginner videos (YouTube search)","https://www.youtube.com/results?search_query=climate+change+explained+for+kids"],["🎬","vid","Kurzgesagt: climate change","Animated explainers (YouTube search)","https://www.youtube.com/results?search_query=Kurzgesagt+climate+change"],["🎬","vid","TED-Ed: climate change","Short lessons with animation (YouTube search)","https://www.youtube.com/results?search_query=TED-Ed+climate+change"],["🎬","vid","The greenhouse effect explained","How heat gets trapped (YouTube search)","https://www.youtube.com/results?search_query=greenhouse+effect+explained+for+kids"],["🎬","vid","Sea level rise explained","Why oceans are rising (YouTube search)","https://www.youtube.com/results?search_query=sea+level+rise+explained"],["🎬","vid","Renewable energy for kids","Solar, wind and water power (YouTube search)","https://www.youtube.com/results?search_query=renewable+energy+for+kids"],["📰","art","WWF","How climate change affects wildlife","https://www.worldwildlife.org"],["📰","art","Our World in Data","Charts about CO₂, energy and temperature","https://ourworldindata.org"],["📰","art","IPCC","Reports by the world’s top climate scientists (advanced)","https://www.ipcc.ch"],["📰","art","Earth Day","Ideas for school and community action","https://www.earthday.org"]];
 var CH=[["all","All"],["web","🌐 Websites"],["vid","🎬 Videos"],["art","📰 Articles"]];
 function showRes(k){$("chips").querySelectorAll(".chip").forEach(function(c){c.classList.toggle("on",c.dataset.k===k)});$("reslist").innerHTML="";
-  RS.filter(function(r){return k==="all"||r[1]===k}).forEach(function(r){$("reslist").appendChild(el("div","res","<em>"+r[0]+"</em><div><a href='"+r[4]+"' target='_blank' rel='noopener'>"+r[2]+"</a><small>"+r[3]+"</small></div>"))})}
+  RS.filter(function(r){return k==="all"||r[1]===k}).forEach(function(r){var v=r[1]==='vid';$('reslist').appendChild(el('div','res'+(v?' vid':''),(v?"<span class='pl'>▶</span>":'<em>'+r[0]+'</em>')+"<div><a href='"+r[4]+"' target='_blank' rel='noopener'>"+(v?'Watch: ':'')+r[2]+'</a><small>'+r[3]+'</small></div>'))})}
 CH.forEach(function(c){var b=el("button","chip",c[1]);b.dataset.k=c[0];b.onclick=function(){showRes(c[0])};$("chips").appendChild(b)});showRes("all");
 
 ["Research","Creativity","Solutions","Teamwork","Language"].forEach(function(n,i){var d=el("p","",n+": ");var s=el("select");s.id="r"+i;[4,3,2,1].forEach(function(v){var o=el("option","",String(v));o.value=v;s.appendChild(o)});d.appendChild(s);$("rub").appendChild(d)});
@@ -292,6 +328,21 @@ $("mk").onclick=function(){var n=$("nm").value.trim();if(!n)return;$("cn").textC
 
 $("unlock").onclick=function(){if($("code").value.trim().toLowerCase()==="teacher"){$("lock").classList.add("hide");$("tcontent").classList.remove("hide")}else{$("lockmsg").textContent="Wrong code."}};
 
+var A=[['solar','☀️ Solar roofs'],['trees','🌳 Trees'],['ev','🚌 Electric buses'],['rec','♻️ Recycling'],['wind','💨 Wind power']],on={};
+function sim(){var n=0;A.forEach(function(a){var v=on[a[0]]?1:0;n+=v;$('a_'+a[0]).style.opacity=v});$('smog').style.opacity=.55-n*.11;$('fc').textContent='City health: '+n*20+'% – '+['Smog everywhere 😷','The air is starting to clear','Getting better!','A greener city appears 🌱','Almost perfect!','A clean, green city of 2050 🌆✨'][n]}
+A.forEach(function(a){var b=el('button','chip',a[1]);b.onclick=function(){on[a[0]]=!on[a[0]];b.classList.toggle('on');sim()};$('sw').appendChild(b)});sim();
+['Turn off lights and chargers you are not using.','Walk, cycle or take the bus once.','Use a reusable bottle and bag all day.','Eat one plant-based meal.','Sort your rubbish for recycling.','Take a 5-minute shorter shower.','Tell your family one climate fact.'].forEach(function(t,i){$('chal').appendChild(el('div','step',"<label><input type='checkbox'><span><b>Day "+(i+1)+':</b> '+t+'</span></label>'))});
+var XP=0,LV=[[0,'Cadet'],[40,'Explorer'],[90,'Scientist'],[150,'Guardian'],[220,'Planet Hero 🌍']],cur=0,seen=new WeakSet();
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show')},2200)}
+function hud(){var l=0;LV.forEach(function(v,i){if(XP>=v[0])l=i});var nx=LV[l+1];$('lv').textContent='Level '+(l+1)+': '+LV[l][1]+' · '+XP+' XP'+(nx?' / '+nx[0]:' · MAX');$('xb').style.width=(nx?(XP-LV[l][0])/(nx[0]-LV[l][0])*100:100)+'%';if(l>cur){cur=l;toast('🚀 Level up! '+LV[l][1])}}
+function gain(n){XP+=n;hud()}
+document.addEventListener('click',function(e){var t=e.target.closest('.tile,.flip,.chip,.btn,.opt,nav button');if(!t||seen.has(t))return;seen.add(t);gain(t.classList.contains('opt')?(t.classList.contains('ok')?10:1):2)});
+document.addEventListener('change',function(e){if(e.target.type==='checkbox'&&e.target.checked&&!seen.has(e.target)){seen.add(e.target);gain(10)}});
+hud();
+(function(){var c=$('sky'),x=c.getContext('2d'),W,H,s=[],t=0;function rs(){W=c.width=innerWidth;H=c.height=innerHeight;s=[];for(var i=0;i<130;i++)s.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,v:Math.random()*.25+.05})}
+rs();addEventListener('resize',rs);
+function f(){t+=.004;x.clearRect(0,0,W,H);x.fillStyle='#fff';s.forEach(function(p){p.y+=p.v;if(p.y>H){p.y=0;p.x=Math.random()*W}x.globalAlpha=.4+.4*Math.sin(t*20+p.x);x.beginPath();x.arc(p.x,p.y,p.r,0,6.3);x.fill()});
+x.globalAlpha=.3;x.strokeStyle='#00e5ff';var cx=W*.86,cy=H*.24,R=Math.min(W,H)*.13,k;for(k=0;k<6;k++){x.beginPath();x.ellipse(cx,cy,R*Math.abs(Math.cos(t+k*.52))+.5,R,0,0,6.3);x.stroke()}for(k=-2;k<=2;k++){var d=k*R/3;x.beginPath();x.ellipse(cx,cy+d,Math.sqrt(R*R-d*d),R*.12,0,0,6.3);x.stroke()}requestAnimationFrame(f)}f()})();
 go(location.hash.slice(1));
 </script>
 </body>
